@@ -1,31 +1,34 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
+import React, { useState, useEffect } from "react";
 import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
 import SearchBar from "../../components/searchBar";
-import { NativeBaseProvider, Stack } from "native-base";
+import { getRecipe } from "../../api/recipes";
+import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
+import { NativeBaseProvider, Stack, Box } from "native-base";
 
 const Search = ({ navigation }) => {
-  const resultsData = [
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-  ];
+  const [recipes, setRecipes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      const allRecipe = await getRecipe();
+      setRecipes(allRecipe);
+    };
+    getRecipes();
+  }, []);
+
+  const filterRecipes = () => {
+    if (!searchQuery.trim()) {
+      return recipes;
+    }
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return recipes.filter(
+      (recipe) =>
+        recipe.title.toLowerCase().includes(lowerCaseQuery) ||
+        recipe.ingredients.toLowerCase().includes(lowerCaseQuery)
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -41,15 +44,29 @@ const Search = ({ navigation }) => {
         <View style={styles.contentContainer}>
           <Text style={styles.header}>Last Searched</Text>
           <NativeBaseProvider>
-            <Stack direction="row" space={2} flexWrap="wrap">
-              {resultsData.map((item, index) => (
-                <Card
-                  key={index}
-                  title={item.title}
-                  author={item.author}
-                  imageUrl={item.imageUrl}
-                />
-              ))}
+            <Stack direction="row" flexWrap="wrap" justifyContent="center">
+              {recipes.map((recipe, index) =>
+                index < 3 ? (
+                  <Box
+                    key={index}
+                    flex={1}
+                    alignItems="center"
+                  >
+                    <Card
+                      title={recipe.title}
+                      author={recipe.author}
+                      ingredients={recipe.ingredients}
+                      instructions={recipe.instructions}
+                      imageUrl={recipe.imageUrl}
+                      prepTime={recipe.prepTime}
+                      cookTime={recipe.cookTime}
+                      totalTime={recipe.totalTime}
+                      servings={recipe.servings}
+                      calories={recipe.calories}
+                    />
+                  </Box>
+                ) : null
+              )}
             </Stack>
           </NativeBaseProvider>
         </View>
@@ -57,15 +74,30 @@ const Search = ({ navigation }) => {
         <View style={styles.contentContainer}>
           <Text style={styles.header}>Search Results</Text>
           <NativeBaseProvider>
-            <Stack direction="row" space={2} flexWrap="wrap">
-              {resultsData.map((item, index) => (
-                <Card
-                  key={index}
-                  title={item.title}
-                  author={item.author}
-                  imageUrl={item.imageUrl}
-                />
-              ))}
+            <Stack direction="row" flexWrap="wrap" justifyContent="center">
+              {filterRecipes().map((recipe, index) =>
+                index < 3 ? (
+                  <Box
+                    key={index}
+                    flex={1}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Card
+                      title={recipe.title}
+                      author={recipe.author}
+                      ingredients={recipe.ingredients}
+                      instructions={recipe.instructions}
+                      imageUrl={recipe.imageUrl}
+                      prepTime={recipe.prepTime}
+                      cookTime={recipe.cookTime}
+                      totalTime={recipe.totalTime}
+                      servings={recipe.servings}
+                      calories={recipe.calories}
+                    />
+                  </Box>
+                ) : null
+              )}
             </Stack>
           </NativeBaseProvider>
         </View>
@@ -96,12 +128,12 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 40,
-    left: 30,
   },
   header: {
     fontSize: 18,
     fontWeight: "bold",
-    paddingBottom: 20,
+    marginBottom: 20,
+    marginLeft: 30,
   },
 });
 

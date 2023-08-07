@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
-import { NativeBaseProvider, Stack, Box } from "native-base";
 import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
-import getRecipe from "../../api/getRecipes";
-import addRecipes from "../../api/addRecipes";
+import { getRecipe, addRecipes } from "../../api/recipes";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Button,
+} from "react-native";
+import { NativeBaseProvider, Stack, Box } from "native-base";
 
 const Home = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
@@ -14,14 +20,31 @@ const Home = ({ navigation }) => {
       const allRecipe = await getRecipe();
       setRecipes(allRecipe);
     };
-
     const addSampleRecipes = async () => {
       await addRecipes();
     };
-
     getRecipes();
     // addSampleRecipes();
   }, []);
+
+  const filterRecipesByCalories = (minCalories, maxCalories) => {
+    return recipes.filter(
+      (recipe) =>
+        recipe.calories >= minCalories && recipe.calories <= maxCalories
+    );
+  };
+
+  const inspirationRecipesArray = (array) => {
+    const newArray = array.slice();
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const randomIndex = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[randomIndex]] = [newArray[randomIndex], newArray[i]];
+    }
+    return newArray;
+  };
+
+  const filteredRecipes = filterRecipesByCalories(200, 500);
+  const randomizedRecipes = inspirationRecipesArray([...recipes]);
 
   return (
     <View style={styles.container}>
@@ -34,19 +57,13 @@ const Home = ({ navigation }) => {
           <Text style={styles.title}>GoMeal</Text>
           <Text style={styles.subtitle}>Your one stop meal planner</Text>
         </View>
-
         <View style={styles.contentContainer}>
           <Text style={styles.header}>Healthier Choices</Text>
           <NativeBaseProvider>
             <Stack direction="row" flexWrap="wrap" justifyContent="center">
-              {recipes.map((recipe, index) =>
+              {filteredRecipes.map((recipe, index) =>
                 index < 3 ? (
-                  <Box
-                    key={index}
-                    flex={1}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
+                  <Box key={index} flex={1} alignItems="center">
                     <Card
                       title={recipe.title}
                       author={recipe.author}
@@ -70,7 +87,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.header}>Inspirations</Text>
           <NativeBaseProvider>
             <Stack direction="row" flexWrap="wrap" justifyContent="center">
-              {recipes.map((recipe, index) =>
+              {randomizedRecipes.map((recipe, index) =>
                 index < 3 ? (
                   <Box
                     key={index}
