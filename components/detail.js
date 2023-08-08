@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
 const Details = ({ route }) => {
+  const [heartName, setHeartName] = useState("hearto");
   const navigation = useNavigation();
   const {
     title,
@@ -29,11 +30,35 @@ const Details = ({ route }) => {
     navigation.goBack();
   };
 
+  const handleSave = () => {
+    setHeartName((prevName) => (prevName === "hearto" ? "heart" : "hearto"));
+  };
+
+  const handleOnPress = () => {
+    if (heartName === "hearto") {
+      console.log('This is saved')
+    } else {
+      console.log('This is not saved')
+    }
+  };
+
   return (
     <ScrollView style={{ height: "80%" }}>
-      <TouchableOpacity onPress={handleGoBack} style={styles.backBtn}>
-        <AntDesign name="arrowleft" size={24} color="black" />
-      </TouchableOpacity>
+      <View style={styles.btnRow}>
+        <TouchableOpacity
+          onPress={handleGoBack}
+        >
+          <AntDesign name="arrowleft" size={24} color="black" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => {
+            handleSave();
+            handleOnPress();
+          }}>
+          <AntDesign name={heartName} size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+
       <Image
         style={styles.imgStyle}
         source={{
@@ -141,12 +166,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 10,
   },
-  backBtn: {
+  btnRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 60,
-    marginLeft: 10,
-    width: 50,
+    marginLeft: 20,
+    width: "90%",
     height: 50,
-    justifyContent: "center",
     alignItems: "center",
   },
 });

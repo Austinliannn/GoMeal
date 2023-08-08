@@ -3,12 +3,19 @@ import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
 import SearchBar from "../../components/searchBar";
 import { getRecipe } from "../../api/recipes";
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
-import { NativeBaseProvider, Stack, Box } from "native-base";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from "react-native";
+import { NativeBaseProvider, Box } from "native-base";
 
 const Search = ({ navigation }) => {
   const [recipes, setRecipes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -18,17 +25,45 @@ const Search = ({ navigation }) => {
     getRecipes();
   }, []);
 
+  useEffect(() => {
+    const filtered = filterRecipes();
+    setFilteredRecipes(filtered);
+  }, [searchQuery, recipes]);
+
   const filterRecipes = () => {
     if (!searchQuery.trim()) {
       return recipes;
     }
     const lowerCaseQuery = searchQuery.toLowerCase();
-    return recipes.filter(
-      (recipe) =>
-        recipe.title.toLowerCase().includes(lowerCaseQuery) ||
-        recipe.ingredients.toLowerCase().includes(lowerCaseQuery)
-    );
+    return recipes.filter((recipe) => {
+      const titleMatch = recipe.title.toLowerCase().includes(lowerCaseQuery);
+      const ingredientMatch = recipe.ingredients.some((ingredient) =>
+        ingredient.toLowerCase().includes(lowerCaseQuery)
+      );
+      return titleMatch || ingredientMatch;
+    });
   };
+
+  const handleSearchQueryChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  const renderRecipeCard = (recipe, index) => (
+    <Box key={index} flex={1} alignItems="center" style={styles.cardBox}>
+      <Card
+        title={recipe.title}
+        author={recipe.author}
+        ingredients={recipe.ingredients}
+        instructions={recipe.instructions}
+        imageUrl={recipe.imageUrl}
+        prepTime={recipe.prepTime}
+        cookTime={recipe.cookTime}
+        totalTime={recipe.totalTime}
+        servings={recipe.servings}
+        calories={recipe.calories}
+      />
+    </Box>
+  );
 
   return (
     <View style={styles.container}>
@@ -38,67 +73,27 @@ const Search = ({ navigation }) => {
           source={require("../../assets/searchHeader.jpg")}
         />
         <View style={styles.headerText}>
-          <SearchBar />
-        </View>
-
-        <View style={styles.contentContainer}>
-          <Text style={styles.header}>Last Searched</Text>
-          <NativeBaseProvider>
-            <Stack direction="row" flexWrap="wrap" justifyContent="center">
-              {recipes.map((recipe, index) =>
-                index < 3 ? (
-                  <Box
-                    key={index}
-                    flex={1}
-                    alignItems="center"
-                  >
-                    <Card
-                      title={recipe.title}
-                      author={recipe.author}
-                      ingredients={recipe.ingredients}
-                      instructions={recipe.instructions}
-                      imageUrl={recipe.imageUrl}
-                      prepTime={recipe.prepTime}
-                      cookTime={recipe.cookTime}
-                      totalTime={recipe.totalTime}
-                      servings={recipe.servings}
-                      calories={recipe.calories}
-                    />
-                  </Box>
-                ) : null
-              )}
-            </Stack>
-          </NativeBaseProvider>
+          <SearchBar onSearchQueryChange={handleSearchQueryChange} />
         </View>
 
         <View style={styles.contentContainer}>
           <Text style={styles.header}>Search Results</Text>
           <NativeBaseProvider>
-            <Stack direction="row" flexWrap="wrap" justifyContent="center">
-              {filterRecipes().map((recipe, index) =>
-                index < 3 ? (
-                  <Box
-                    key={index}
-                    flex={1}
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Card
-                      title={recipe.title}
-                      author={recipe.author}
-                      ingredients={recipe.ingredients}
-                      instructions={recipe.instructions}
-                      imageUrl={recipe.imageUrl}
-                      prepTime={recipe.prepTime}
-                      cookTime={recipe.cookTime}
-                      totalTime={recipe.totalTime}
-                      servings={recipe.servings}
-                      calories={recipe.calories}
-                    />
-                  </Box>
-                ) : null
-              )}
-            </Stack>
+            {searchQuery !== "" ? (
+              filteredRecipes.length > 0 ? (
+                <View style={styles.rowContainer}>
+                  {filteredRecipes.map((recipe, index) =>
+                    renderRecipeCard(recipe, index)
+                  )}
+                </View>
+              ) : (
+                <Text>No recipes found.</Text>
+              )
+            ) : (
+              <View style={styles.rowContainer}>
+                <Text>Search for recipes to view results.</Text>
+              </View>
+            )}
           </NativeBaseProvider>
         </View>
       </ScrollView>
@@ -134,6 +129,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     marginLeft: 30,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  cardBox: {
+    width: "30%",
+    margin: "1.5%",
   },
 });
 

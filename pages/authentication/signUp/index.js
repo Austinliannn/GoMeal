@@ -29,7 +29,6 @@ const SignUp = ({ navigation }) => {
         await addUser(user.uid, {
           name: userName,
           email: user.email,
-          lastThreeRecipe: [],
           groceryList: [],
           recipeList: [],
           bio: bio,
