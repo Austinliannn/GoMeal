@@ -42,7 +42,7 @@ const Card = ({
     <NativeBaseProvider>
       <TouchableOpacity onPress={handlePress}>
         <Box
-          maxW="120"
+          maxW="115"
           rounded="lg"
           overflow="hidden"
           borderColor="coolGray.200"

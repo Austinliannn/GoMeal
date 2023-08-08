@@ -1,9 +1,9 @@
-import db from "../firebase";
+import { firebase } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 
-const getRecipe = async () => {
+export const getRecipe = async () => {
     try {
-        const recipesRef = collection(db, "recipes");
+        const recipesRef = collection(firebase, "recipes");
         const recipesSnapshot = await getDocs(recipesRef);
         const recipes = recipesSnapshot.docs.map((doc) => doc.data());
         return recipes;
@@ -13,9 +13,9 @@ const getRecipe = async () => {
       }
 };
 
-const addRecipes = async () => {
+export const addRecipes = async () => {
   try {
-    const recipesRef = collection(db, "recipes");
+    const recipesRef = collection(firebase, "recipes");
 
     // Sample recipes data
     const recipesData = [
@@ -61,5 +61,3 @@ const addRecipes = async () => {
     console.error("Error adding recipes:", error);
   }
 };
-
-export default getRecipe;

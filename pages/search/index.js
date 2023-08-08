@@ -1,31 +1,69 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
+import React, { useState, useEffect } from "react";
 import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
 import SearchBar from "../../components/searchBar";
-import { NativeBaseProvider, Stack } from "native-base";
+import { getRecipe } from "../../api/recipes";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from "react-native";
+import { NativeBaseProvider, Box } from "native-base";
 
 const Search = ({ navigation }) => {
-  const resultsData = [
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-    {
-      title: "Flakes on Dress Gardens",
-      author: "Recipe Author",
-      imageUrl:
-        "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-    },
-  ];
+  const [recipes, setRecipes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      const allRecipe = await getRecipe();
+      setRecipes(allRecipe);
+    };
+    getRecipes();
+  }, []);
+
+  useEffect(() => {
+    const filtered = filterRecipes();
+    setFilteredRecipes(filtered);
+  }, [searchQuery, recipes]);
+
+  const filterRecipes = () => {
+    if (!searchQuery.trim()) {
+      return recipes;
+    }
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return recipes.filter((recipe) => {
+      const titleMatch = recipe.title.toLowerCase().includes(lowerCaseQuery);
+      const ingredientMatch = recipe.ingredients.some((ingredient) =>
+        ingredient.toLowerCase().includes(lowerCaseQuery)
+      );
+      return titleMatch || ingredientMatch;
+    });
+  };
+
+  const handleSearchQueryChange = (query) => {
+    setSearchQuery(query);
+  };
+
+  const renderRecipeCard = (recipe, index) => (
+    <Box key={index} flex={1} alignItems="center" style={styles.cardBox}>
+      <Card
+        title={recipe.title}
+        author={recipe.author}
+        ingredients={recipe.ingredients}
+        instructions={recipe.instructions}
+        imageUrl={recipe.imageUrl}
+        prepTime={recipe.prepTime}
+        cookTime={recipe.cookTime}
+        totalTime={recipe.totalTime}
+        servings={recipe.servings}
+        calories={recipe.calories}
+      />
+    </Box>
+  );
 
   return (
     <View style={styles.container}>
@@ -35,38 +73,27 @@ const Search = ({ navigation }) => {
           source={require("../../assets/searchHeader.jpg")}
         />
         <View style={styles.headerText}>
-          <SearchBar />
-        </View>
-
-        <View style={styles.contentContainer}>
-          <Text style={styles.header}>Last Searched</Text>
-          <NativeBaseProvider>
-            <Stack direction="row" space={2} flexWrap="wrap">
-              {resultsData.map((item, index) => (
-                <Card
-                  key={index}
-                  title={item.title}
-                  author={item.author}
-                  imageUrl={item.imageUrl}
-                />
-              ))}
-            </Stack>
-          </NativeBaseProvider>
+          <SearchBar onSearchQueryChange={handleSearchQueryChange} />
         </View>
 
         <View style={styles.contentContainer}>
           <Text style={styles.header}>Search Results</Text>
           <NativeBaseProvider>
-            <Stack direction="row" space={2} flexWrap="wrap">
-              {resultsData.map((item, index) => (
-                <Card
-                  key={index}
-                  title={item.title}
-                  author={item.author}
-                  imageUrl={item.imageUrl}
-                />
-              ))}
-            </Stack>
+            {searchQuery !== "" ? (
+              filteredRecipes.length > 0 ? (
+                <View style={styles.rowContainer}>
+                  {filteredRecipes.map((recipe, index) =>
+                    renderRecipeCard(recipe, index)
+                  )}
+                </View>
+              ) : (
+                <Text>No recipes found.</Text>
+              )
+            ) : (
+              <View style={styles.rowContainer}>
+                <Text>Search for recipes to view results.</Text>
+              </View>
+            )}
           </NativeBaseProvider>
         </View>
       </ScrollView>
@@ -96,12 +123,21 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingTop: 40,
-    left: 30,
   },
   header: {
     fontSize: 18,
     fontWeight: "bold",
-    paddingBottom: 20,
+    marginBottom: 20,
+    marginLeft: 30,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  cardBox: {
+    width: "30%",
+    margin: "1.5%",
   },
 });
 

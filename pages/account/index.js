@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import FooterNav from "../../components/footerNav";
 import SearchBar from "../../components/searchBar";
 import Button from "../../components/button";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUser } from "../../api/users";
 
 const Account = ({ navigation }) => {
+  const auth = getAuth();
+  const [userData, setUserData] = useState(null);
+
   const savedData = [
     {
       title: "Flakes on Dress Gardens",
@@ -26,17 +31,20 @@ const Account = ({ navigation }) => {
     },
   ];
 
-  const profile = {
-    name: "Bonnie R. Storm",
-    bio: "Nutrition, health, food & wellness! This is my jam. Putting together healthy meals and finding fitness that fit my lifestyle.",
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const userDatas = await getUser(user.uid);
+      setUserData(userDatas);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <View style={styles.container}>
       <ScrollView style={{ height: "80%" }}>
         <View style={styles.headerText}>
-          <Text style={styles.title}>{profile.name}</Text>
-          <Text style={styles.subtitle}>{profile.bio}</Text>
+          <Text style={styles.title}>{userData?.name}</Text>
+          <Text style={styles.subtitle}>{userData?.bio}</Text>
         </View>
         <View style={styles.contentContainer}>
           <View style={styles.searchBar}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import FooterNav from "../../components/footerNav";
 import {
@@ -14,34 +14,15 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import { Feather, Entypo } from "@expo/vector-icons";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUser, editGroceryList } from "../../api/users";
 
 const GroceryList = ({ navigation }) => {
-  const listData = [
-    {
-      task: "Code",
-      qty: "2",
-      isCompleted: false,
-    },
-    {
-      task: "Meeting with team at 9",
-      qty: "2",
-      isCompleted: false,
-    },
-    {
-      task: "Check Emails",
-      qty: "2",
-      isCompleted: false,
-    },
-    {
-      task: "Write an article",
-      qty: "2",
-      isCompleted: false,
-    },
-  ];
-  const [list, setList] = React.useState(listData);
-  const [taskValue, setTaskValue] = React.useState("");
-  const [qtyValue, setQtyValue] = React.useState("");
+  const [list, setList] = useState([]);
+  const [taskValue, setTaskValue] = useState("");
+  const [qtyValue, setQtyValue] = useState("");
   const toast = useToast();
+  const auth = getAuth();
 
   const addItem = (task, qty) => {
     if (task === "" || qty === "") {
@@ -52,21 +33,24 @@ const GroceryList = ({ navigation }) => {
       });
       return;
     }
+    const newItem = {
+      task: task,
+      qty: qty,
+      isCompleted: false,
+    };
+
     setList((prevList) => {
-      return [
-        {
-          task: task,
-          qty: qty,
-          isCompleted: false,
-        },
-        ...prevList,
-      ];
+      const updatedList = [newItem, ...prevList];
+      editGroceryList([newItem, ...prevList]);
+      return updatedList;
     });
   };
 
   const handleDelete = (index) => {
     setList((prevList) => {
       const temp = prevList.filter((_, itemI) => itemI !== index);
+      console.log(temp);
+      editGroceryList(temp);
       return temp;
     });
   };
@@ -75,9 +59,18 @@ const GroceryList = ({ navigation }) => {
     setList((prevList) => {
       const newList = [...prevList];
       newList[index].isCompleted = !newList[index].isCompleted;
+      editGroceryList(newList);
       return newList;
     });
   };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const userDatas = await getUser(user.uid);
+      setList(userDatas.groceryList);
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -109,6 +102,7 @@ const GroceryList = ({ navigation }) => {
                       onChangeText={(v) => setQtyValue(v)}
                       value={qtyValue}
                       placeholder="Quantity"
+                      keyboardType="numeric"
                     />
                     <IconButton
                       borderRadius="sm"

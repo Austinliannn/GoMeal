@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   VStack,
   Input,
@@ -7,7 +7,9 @@ import {
 } from "native-base";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-const SearchBar = ({}) => {
+const SearchBar = ({ onSearchQueryChange }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  
   return (
     <NativeBaseProvider>
         <VStack w="100%" alignSelf="center">
@@ -27,6 +29,11 @@ const SearchBar = ({}) => {
                 as={<Ionicons name="ios-search" />}
             />
             }
+            onChangeText={(text) => {
+              setSearchQuery(text);
+              onSearchQueryChange(text);
+            }}
+            value={searchQuery}
         />
         </VStack>
     </NativeBaseProvider>
