@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
-import { getRecipe, addRecipes } from "../../api/recipes";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Button,
-} from "react-native";
+import { getRecipe } from "../../api/recipes";
+import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { NativeBaseProvider, Stack, Box } from "native-base";
 
 const Home = ({ navigation }) => {
@@ -20,11 +13,7 @@ const Home = ({ navigation }) => {
       const allRecipe = await getRecipe();
       setRecipes(allRecipe);
     };
-    const addSampleRecipes = async () => {
-      await addRecipes();
-    };
     getRecipes();
-    // addSampleRecipes();
   }, []);
 
   const filterRecipesByCalories = (minCalories, maxCalories) => {
@@ -38,12 +27,17 @@ const Home = ({ navigation }) => {
     const newArray = array.slice();
     for (let i = newArray.length - 1; i > 0; i--) {
       const randomIndex = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[randomIndex]] = [newArray[randomIndex], newArray[i]];
+      [newArray[i], newArray[randomIndex]] = [
+        newArray[randomIndex],
+        newArray[i],
+      ];
     }
     return newArray;
   };
 
-  const filteredRecipes = filterRecipesByCalories(200, 500);
+  const filteredRecipes = inspirationRecipesArray(
+    filterRecipesByCalories(100, 300)
+  );
   const randomizedRecipes = inspirationRecipesArray([...recipes]);
 
   return (

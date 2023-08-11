@@ -3,13 +3,7 @@ import Card from "../../components/card";
 import FooterNav from "../../components/footerNav";
 import SearchBar from "../../components/searchBar";
 import { getRecipe } from "../../api/recipes";
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View, Image } from "react-native";
 import { NativeBaseProvider, Box } from "native-base";
 
 const Search = ({ navigation }) => {
@@ -65,6 +59,14 @@ const Search = ({ navigation }) => {
     </Box>
   );
 
+  const chunkArray = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={{ height: "80%" }}>
@@ -81,9 +83,15 @@ const Search = ({ navigation }) => {
           <NativeBaseProvider>
             {searchQuery !== "" ? (
               filteredRecipes.length > 0 ? (
-                <View style={styles.rowContainer}>
-                  {filteredRecipes.map((recipe, index) =>
-                    renderRecipeCard(recipe, index)
+                <View style={styles.recipeRowsContainer}>
+                  {chunkArray(filteredRecipes, 3).map(
+                    (rowRecipes, rowIndex) => (
+                      <View style={styles.rowContainer} key={rowIndex}>
+                        {rowRecipes.map((recipe, index) =>
+                          renderRecipeCard(recipe, index)
+                        )}
+                      </View>
+                    )
                   )}
                 </View>
               ) : (

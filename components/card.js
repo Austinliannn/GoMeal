@@ -43,6 +43,7 @@ const Card = ({
       <TouchableOpacity onPress={handlePress}>
         <Box
           maxW="115"
+          height={175}
           rounded="lg"
           overflow="hidden"
           borderColor="coolGray.200"
