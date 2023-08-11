@@ -25,7 +25,7 @@ const GroceryList = ({ navigation }) => {
   const auth = getAuth();
 
   const addItem = (task, qty) => {
-    if (task === "" || qty === "") {
+    if (task === "" && qty === "") {
       toast.show({
         task: "Please Enter Text",
         qty: "Please Enter Quantity",
@@ -41,7 +41,7 @@ const GroceryList = ({ navigation }) => {
 
     setList((prevList) => {
       const updatedList = [newItem, ...prevList];
-      editGroceryList([newItem, ...prevList]);
+      editGroceryList(updatedList);
       return updatedList;
     });
   };
@@ -49,7 +49,6 @@ const GroceryList = ({ navigation }) => {
   const handleDelete = (index) => {
     setList((prevList) => {
       const temp = prevList.filter((_, itemI) => itemI !== index);
-      console.log(temp);
       editGroceryList(temp);
       return temp;
     });
@@ -66,8 +65,10 @@ const GroceryList = ({ navigation }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      const userDatas = await getUser(user.uid);
-      setList(userDatas.groceryList);
+      if (user) {
+        const userDatas = await getUser(user.uid);
+        setList(userDatas.groceryList);
+      }
     });
     return () => unsubscribe();
   }, []);

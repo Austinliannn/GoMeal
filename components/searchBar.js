@@ -5,7 +5,7 @@ import {
   Icon,
   NativeBaseProvider,
 } from "native-base";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 const SearchBar = ({ onSearchQueryChange }) => {
   const [searchQuery, setSearchQuery] = useState("");

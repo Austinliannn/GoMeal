@@ -36,15 +36,15 @@ export const editGroceryList = async (groceryList) => {
   }
 };
 
-// export const editRecipeList = async (recipeList) => {
-//   const auth = getAuth();
-//   const user = auth.currentUser;
-//   try {
-//     const userId = user.uid;
-//     const userCollection = doc(collection(firebase, "users"), userId);
-//     await setDoc(userCollection, { recipeList }, { merge: true });
-//   } catch (error) {
-//     console.error("Error adding/updating recipeList data:", error);
-//   }
-// };
+export const editRecipeList = async (recipeList) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  try {
+    const userId = user.uid;
+    const userCollection = doc(collection(firebase, "users"), userId);
+    await setDoc(userCollection, { recipeList }, { merge: true });
+  } catch (error) {
+    console.error("Error adding/updating recipeList data:", error);
+  }
+};
 

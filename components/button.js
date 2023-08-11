@@ -1,19 +1,13 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, Text } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 
-const Button = ({ btnStyle, textStyle, title, author, imageUrl }) => {
-  const navigation = useNavigation();
-
-  const handlePress = () => {
-    navigation.navigate("MoreDetails", { title, author, imageUrl });
-  };
+const Button = ({btnStyle, textStyle, hide, text, onPress }) => {
 
   return (
-    <TouchableOpacity style={[styles.btn, btnStyle]} onPress={handlePress}>
-      <Text style={[styles.btnText, textStyle]}>{title}</Text>
-      <AntDesign name="rightcircleo" size={20} color="black" />
+    <TouchableOpacity style={[styles.btn, btnStyle]} onPress={onPress}>
+      <Text style={[styles.btnText, textStyle]}>{text}</Text>
+      {hide === false ? <AntDesign name="rightcircleo" size={20} color="black" /> : '' }
     </TouchableOpacity>
   );
 };

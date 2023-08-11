@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,13 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getUser, editRecipeList } from "../api/users";
 
 const Details = ({ route }) => {
+  const auth = getAuth();
   const [heartName, setHeartName] = useState("hearto");
+  const [recipeList, setRecipeList] = useState([]);
   const navigation = useNavigation();
   const {
     title,
@@ -30,31 +34,67 @@ const Details = ({ route }) => {
     navigation.goBack();
   };
 
-  const handleSave = () => {
-    setHeartName((prevName) => (prevName === "hearto" ? "heart" : "hearto"));
+  const handleOnPress = () => {
+    const newItem = {
+      title: title,
+      author: author,
+      ingredients: ingredients,
+      instructions: instructions,
+      imageUrl: imageUrl,
+      prepTime: prepTime,
+      cookTime: cookTime,
+      totalTime: totalTime,
+      servings: servings,
+      calories: calories,
+    };
+
+    setRecipeList((prevList) => {
+      const recipeIndex = prevList.findIndex(
+        (item) => item.title === newItem.title
+      );
+
+      if (recipeIndex !== -1) {
+        const updatedList = prevList.filter(
+          (_, index) => index !== recipeIndex
+        );
+        setHeartName("hearto");
+        editRecipeList(updatedList);
+        return updatedList;
+      }
+
+      const updatedList = [newItem, ...prevList];
+      setHeartName("heart");
+      editRecipeList(updatedList);
+      return updatedList;
+    });
   };
 
-  const handleOnPress = () => {
-    if (heartName === "hearto") {
-      console.log('This is saved')
-    } else {
-      console.log('This is not saved')
-    }
-  };
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDatas = await getUser(user.uid);
+        const recipeExists = userDatas.recipeList.some(
+          (recipe) => recipe.title === title
+        );
+        setHeartName(recipeExists ? "heart" : "hearto");
+        setRecipeList(userDatas.recipeList);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <ScrollView style={{ height: "80%" }}>
       <View style={styles.btnRow}>
-        <TouchableOpacity
-          onPress={handleGoBack}
-        >
+        <TouchableOpacity onPress={handleGoBack}>
           <AntDesign name="arrowleft" size={24} color="black" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {
-            handleSave();
+        <TouchableOpacity
+          onPress={() => {
             handleOnPress();
-          }}>
+          }}
+        >
           <AntDesign name={heartName} size={24} color="black" />
         </TouchableOpacity>
       </View>
