@@ -43,7 +43,7 @@ const Search = ({ navigation }) => {
   };
 
   const renderRecipeCard = (recipe, index) => (
-    <Box key={index} flex={1} alignItems="center" style={styles.cardBox}>
+    <Box key={index} alignItems="center" style={styles.cardBox}>
       <Card
         title={recipe.title}
         author={recipe.author}
@@ -83,7 +83,7 @@ const Search = ({ navigation }) => {
           <NativeBaseProvider>
             {searchQuery !== "" ? (
               filteredRecipes.length > 0 ? (
-                <View style={styles.recipeRowsContainer}>
+                <View style={{alignItems: 'center', gap: 8}}>
                   {chunkArray(filteredRecipes, 3).map(
                     (rowRecipes, rowIndex) => (
                       <View style={styles.rowContainer} key={rowIndex}>
@@ -141,11 +141,12 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
+    width: '100%',
+    justifyContent: 'space-between',
+    padding: "1.5%",
   },
   cardBox: {
     width: "30%",
-    margin: "1.5%",
   },
 });
 
