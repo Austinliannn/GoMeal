@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Text } from "react-native";
 import {
   NativeBaseProvider,
@@ -9,38 +9,32 @@ import {
   Pressable,
 } from "native-base";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-const FooterNav = ({selector}) => {
+const FooterNav = ({ selector }) => {
   const [selected, setSelected] = useState(selector);
 
   const navigation = useNavigation();
 
   const navigateToHome = () => {
-    navigation.navigate('Home');
+    navigation.navigate("Home");
   };
 
   const navigateToProfile = () => {
-    navigation.navigate('Search');
+    navigation.navigate("Search");
   };
 
   const navigateToGroceryList = () => {
-    navigation.navigate('GroceryList');
+    navigation.navigate("GroceryList");
   };
 
   const navigateToAccount = () => {
-    navigation.navigate('Account');
+    navigation.navigate("Account");
   };
 
   return (
     <NativeBaseProvider>
-      <Box
-        flex={1}
-        bg="white"
-        safeAreaTop
-        width="100%"
-        alignSelf="center"
-      >
+      <Box flex={1} bg="white" safeAreaTop width="100%" alignSelf="center">
         <HStack alignItems="center" shadow={6}>
           <Pressable
             cursor="pointer"
@@ -51,7 +45,11 @@ const FooterNav = ({selector}) => {
           >
             <Center>
               <Icon
-                as={<MaterialCommunityIcons name={selected === 0 ? "home" : "home-outline"}/>}
+                as={
+                  <MaterialCommunityIcons
+                    name={selected === 0 ? "home" : "home-outline"}
+                  />
+                }
                 color="black"
                 size="lg"
               />
@@ -71,9 +69,7 @@ const FooterNav = ({selector}) => {
                 color="black"
                 size="lg"
               />
-              <Text fontSize="12">
-                Search
-              </Text>
+              <Text fontSize="12">Search</Text>
             </Center>
           </Pressable>
           <Pressable
@@ -85,12 +81,19 @@ const FooterNav = ({selector}) => {
           >
             <Center>
               <Icon
-                as={<MaterialCommunityIcons name={selected === 2 ? "format-list-bulleted-square" : "format-list-checkbox"}/>}
+                as={
+                  <MaterialCommunityIcons
+                    name={
+                      selected === 2
+                        ? "format-list-bulleted-square"
+                        : "format-list-checkbox"
+                    }
+                  />
+                }
                 color="black"
                 size="lg"
               />
-              <Text fontSize="12">Grocery List
-              </Text>
+              <Text fontSize="12">Grocery List</Text>
             </Center>
           </Pressable>
           <Pressable
@@ -110,9 +113,7 @@ const FooterNav = ({selector}) => {
                 color="black"
                 size="lg"
               />
-              <Text fontSize="12">
-                Account
-              </Text>
+              <Text fontSize="12">Account</Text>
             </Center>
           </Pressable>
         </HStack>

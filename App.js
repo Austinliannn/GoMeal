@@ -7,7 +7,6 @@ import Search from "./pages/search";
 import GroceryList from "./pages/groceryList";
 import Account from "./pages/account";
 import Details from "./components/detail";
-import Authentication from "./pages/authentication";
 import Login from "./pages/authentication/login";
 import SignUp from "./pages/authentication/signUp";
 
@@ -17,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Authentication"
+        initialRouteName="Login"
         screenOptions={{
           headerShown: false,
           gestureEnabled: false,
@@ -28,7 +27,6 @@ export default function App() {
         <Stack.Screen name="GroceryList" component={GroceryList} />
         <Stack.Screen name="Account" component={Account} />
         <Stack.Screen name="Details" component={Details} />
-        <Stack.Screen name="Authentication" component={Authentication} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SignUp" component={SignUp} />
       </Stack.Navigator>
