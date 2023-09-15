@@ -1,3 +1,6 @@
+# Github Repository Link
+[https://github.com/Austinliannn/GoMeal](https://github.com/Austinliannn/GoMeal)
+
 # GoMeal
 
 "GoMeal,” is a one-stop solution designed for individuals or couples seeking culinary inspiration, streamlined meal planning, and efficient recipe management. GoMeal offers a diverse collection of recipes, encompassing various cuisines, dietary preferences, and meal types. With the app, users can effortlessly save their favorite recipes and generate shopping lists, ensuring a hassle-free and enjoyable cooking experience.
