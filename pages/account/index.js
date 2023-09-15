@@ -60,9 +60,6 @@ const Account = ({ navigation }) => {
           <Text style={styles.subtitle}>{userData?.bio}</Text>
         </View>
         <View style={styles.contentContainer}>
-          <View style={styles.searchBar}>
-            <SearchBar />
-          </View>
           {userData?.recipeList.length > 0 ? (
             <View style={styles.list}>
               {userData.recipeList.map((item, index) => (
