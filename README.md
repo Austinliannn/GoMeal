@@ -31,7 +31,7 @@
 
 --Android user via link:
 1) Copy this link to the clipboard: ___exp://u.expo.dev/update/1e53b8ee-e109-4ef4-a164-304e9b8252b4___
-2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/f1dc7f41-2dbc-4b45-a2a3-db26d73dc128)
+2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/7eeebc54-8ae6-4f6b-a7b3-f2b4c6721422)
 3) Select the second link or the link that has a globe icon next to it as depicted in the image.
 4) Note that Expo Go must be installed on your mobile device.
 5) Upon clicking the link, you should be prompted with a message to leave the browser and open another application.
@@ -42,14 +42,12 @@
 1) Note that Expo Go must be installed on your mobile device.
 2) Open the camera application and scan the QR Code:
    
-![image](https://github.com/Austinliannn/GoMeal/assets/75471463/69167adc-2b2f-4f91-899a-4109f3d04e5d)
-
-
+![image](https://github.com/Austinliannn/GoMeal/assets/75471463/f7b82d07-92cc-49bd-ae2f-36387b268744)
 
 
 --iOS user via link:
 1) Copy this link to the clipboard: ___exp://u.expo.dev/update/7176449e-3b09-4706-b0ba-82c042d69eaf___
-2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/b4c9ac4a-2e9f-4169-9d4b-3c45da954445)
+2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/9c527f13-c442-4c51-aa8d-a30d891be3d3)
 3) Select the second link or the link that has a globe icon next to it as depicted in the image.
 4) Note that Expo Go must be installed on your mobile device.
 5) Upon clicking the link, you should be prompted with a message to leave the browser and open another application.
@@ -60,7 +58,8 @@
 1) Note that Expo Go must be installed on your mobile device.
 2) Open the camera application and scan the QR Code:
 
-![image](https://github.com/Austinliannn/GoMeal/assets/75471463/d52933b6-2f05-40a6-8324-f8793068f90a)
+![image](https://github.com/Austinliannn/GoMeal/assets/75471463/8c26d984-38fd-4d1f-8a20-4334b6a902d8)
+
 
 
    
