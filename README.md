@@ -33,8 +33,8 @@
 **This method is specifically for mobile devices only**
 
 --Android user via link:
-1) Copy this link to the clipboard: ___exp://u.expo.dev/update/1e53b8ee-e109-4ef4-a164-304e9b8252b4___
-2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/7eeebc54-8ae6-4f6b-a7b3-f2b4c6721422)
+1) Copy this link to the clipboard: ___exp://u.expo.dev/update/bd46fdec-0027-4de8-bb2b-c8dc60aba173___
+2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/3803140b-1b6d-4d09-bd10-6b6b74690d7c)
 3) Select the second link or the link that has a globe icon next to it as depicted in the image.
 4) Note that Expo Go must be installed on your mobile device.
 5) Upon clicking the link, you should be prompted with a message to leave the browser and open another application.
@@ -45,12 +45,11 @@
 1) Note that Expo Go must be installed on your mobile device.
 2) Open the camera application and scan the QR Code:
    
-![image](https://github.com/Austinliannn/GoMeal/assets/75471463/f7b82d07-92cc-49bd-ae2f-36387b268744)
-
+![image](https://github.com/Austinliannn/GoMeal/assets/75471463/eb849715-54d5-4346-b4ca-6209e2715df0)
 
 --iOS user via link:
-1) Copy this link to the clipboard: ___exp://u.expo.dev/update/7176449e-3b09-4706-b0ba-82c042d69eaf___
-2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/9c527f13-c442-4c51-aa8d-a30d891be3d3)
+1) Copy this link to the clipboard: ___exp://u.expo.dev/update/81e65d1b-92d6-4ae8-b3f3-ad138f0cc8d4___
+2) Paste the link in Chrome. It should look something like this. ![image](https://github.com/Austinliannn/GoMeal/assets/75471463/337df2a3-1d0d-4968-9885-034955457ec4)
 3) Select the second link or the link that has a globe icon next to it as depicted in the image.
 4) Note that Expo Go must be installed on your mobile device.
 5) Upon clicking the link, you should be prompted with a message to leave the browser and open another application.
@@ -61,7 +60,8 @@
 1) Note that Expo Go must be installed on your mobile device.
 2) Open the camera application and scan the QR Code:
 
-![image](https://github.com/Austinliannn/GoMeal/assets/75471463/8c26d984-38fd-4d1f-8a20-4334b6a902d8)
+![image](https://github.com/Austinliannn/GoMeal/assets/75471463/6b4dbe22-f464-4814-919c-a9df0eb92b92)
+
 
 
 
